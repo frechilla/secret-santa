@@ -24,8 +24,6 @@ For more information, see README.
 REQRD = (
     'SMTP_SERVER', 
     'SMTP_PORT', 
-    'USERNAME', 
-    'PASSWORD', 
     'TIMEZONE', 
     'PARTICIPANTS', 
     'DONT-PAIR', 
@@ -173,8 +171,9 @@ To generate txt files to distribute manually call with the --text argument:\n\t$
         
         if send:
             server = smtplib.SMTP(config['SMTP_SERVER'], config['SMTP_PORT'])
-            server.starttls()
-            server.login(config['USERNAME'], config['PASSWORD'])
+            if 'USERNAME' in config and 'PASSWD' in config:
+                server.starttls()
+                server.login(config['USERNAME'], config['PASSWORD'])
         for pair in pairs:
             zone = pytz.timezone(config['TIMEZONE'])
             now = zone.localize(datetime.datetime.now())
